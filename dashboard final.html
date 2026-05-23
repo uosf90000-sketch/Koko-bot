@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👑 مستر يوسف - لوحة التداول</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030508;--bg2:#080d14;--gold:#f5c842;--green:#00e887;--red:#ff3d5a;--blue:#2dd4ff;--purple:#b06cff;--text:#e8f0ff;--muted:#3d5070;--border:rgba(255,255,255,0.06);--card:rgba(255,255,255,0.03);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 80% 10%,rgba(245,200,66,.07) 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(0,232,135,.05) 0%,transparent 50%);pointer-events:none;}
+header{position:sticky;top:0;z-index:100;background:rgba(3,5,8,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 2rem;height:68px;display:flex;align-items:center;justify-content:space-between;}
+.logo-crown{font-size:1.6rem;filter:drop-shadow(0 0 12px rgba(245,200,66,.8));animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.logo-text{font-size:1.2rem;font-weight:900;background:linear-gradient(135deg,var(--gold),#fff8dc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.live-badge{display:flex;align-items:center;gap:6px;background:rgba(0,232,135,.1);border:1px solid rgba(0,232,135,.25);border-radius:30px;padding:5px 14px;font-size:.72rem;font-weight:700;color:var(--green);}
+.live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.container{max-width:1400px;margin:0 auto;padding:2rem;position:relative;z-index:1;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.25rem;transition:all .3s;}
+.stat:hover{border-color:rgba(245,200,66,.2);transform:translateY(-2px);}
+.stat-label{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:.3rem;}
+.stat-value{font-size:1.6rem;font-weight:800;font-family:'IBM Plex Mono',monospace;letter-spacing:-1px;}
+.stat-sub{font-size:.7rem;color:var(--muted);margin-top:2px;}
+.main-grid{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:1.5rem;}
+.panel-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.panel-title{font-size:.95rem;font-weight:800;}
+.badge{font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+.badge-green{background:rgba(0,232,135,.15);color:var(--green);border:1px solid rgba(0,232,135,.3);}
+.badge-gold{background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+.analysis-row{display:grid;grid-template-columns:auto 1fr auto auto auto;align-items:center;gap:1rem;padding:1rem 1.5rem;border-bottom:1px solid var(--border);}
+.analysis-row:last-child{border-bottom:none;}
+.a-emoji{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(0,232,135,.1);}
+.a-name{font-weight:700;font-size:.9rem;}
+.a-ticker{font-size:.72rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+.a-price{font-family:'IBM Plex Mono',monospace;font-size:.88rem;font-weight:600;}
+.a-change{font-family:'IBM Plex Mono',monospace;font-size:.78rem;font-weight:700;padding:3px 8px;border-radius:6px;}
+.pos{background:rgba(0,232,135,.12);color:var(--green);}
+.neg{background:rgba(255,61,90,.12);color:var(--red);}
+.signal{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:6px;}
+.sig-buy{background:rgba(0,232,135,.15);color:var(--green);border:1px solid rgba(0,232,135,.3);}
+.sig-hold{background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+.sig-sell{background:rgba(255,61,90,.15);color:var(--red);border:1px solid rgba(255,61,90,.3);}
+.trade-item{display:flex;align-items:center;gap:.75rem;padding:.85rem 1.5rem;border-bottom:1px solid var(--border);}
+.trade-item:last-child{border-bottom:none;}
+.trade-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--green);}
+.trade-info{flex:1;}
+.trade-name{font-size:.85rem;font-weight:700;}
+.trade-time{font-size:.68rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+.bot-status-card{background:linear-gradient(135deg,rgba(0,232,135,.06),rgba(45,212,255,.04));border:1px solid rgba(0,232,135,.15);border-radius:20px;padding:1.5rem;text-align:center;margin-bottom:1.5rem;}
+.bot-ring{width:80px;height:80px;margin:0 auto 1rem;position:relative;}
+.bot-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--green);border-right-color:rgba(0,232,135,.3);animation:spin 3s linear infinite;}
+.bot-ring::after{content:'';position:absolute;inset:8px;border-radius:50%;border:2px solid transparent;border-bottom-color:var(--blue);border-left-color:rgba(45,212,255,.3);animation:spin 2s linear infinite reverse;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bot-icon-inner{position:absolute;inset:15px;border-radius:50%;background:rgba(0,232,135,.1);display:flex;align-items:center;justify-content:center;font-size:1.8rem;}
+.empty-state{padding:2rem;text-align:center;color:var(--muted);font-size:.85rem;}
+@media(max-width:1024px){.main-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.container{padding:1rem}.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center;gap:.75rem">
+    <div class="logo-crown">👑</div>
+    <div>
+      <div class="logo-text">مستر يوسف الصبحي</div>
+      <div style="font-size:.7rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:2px">KOKO TRADER LIVE</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <div class="live-badge"><div class="live-dot"></div><span id="statusText">جاري الاتصال...</span></div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:.85rem;color:var(--muted)" id="clock">--:--:--</div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">💰 الميزانية</div>
+      <div class="stat-value" style="color:var(--gold)" id="balance">100 ر.س</div>
+      <div class="stat-sub">IBKR تجريبي</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">📈 الصفقات</div>
+      <div class="stat-value" style="color:var(--green)" id="totalTrades">0</div>
+      <div class="stat-sub">إجمالي</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">🚀 إشارات شراء</div>
+      <div class="stat-value" style="color:var(--blue)" id="buySignals">0</div>
+      <div class="stat-sub">الآن</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">🕒 آخر تحديث</div>
+      <div class="stat-value" style="color:var(--purple);font-size:1rem" id="lastUpdate">--</div>
+      <div class="stat-sub">من البوت</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🤖 آخر تحليل AI</div>
+          <div class="badge badge-green">Gemini + Groq</div>
+        </div>
+        <div id="analysisContainer">
+          <div class="empty-state">⚙️ جاري الاتصال بالبوت...</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📋 الصفقات الحقيقية</div>
+          <div class="badge badge-gold" id="tradesBadge">0 صفقة</div>
+        </div>
+        <div id="tradesContainer">
+          <div class="empty-state">لا توجد صفقات بعد... البوت يبحث 🔍</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="bot-status-card">
+        <div class="bot-ring"><div class="bot-icon-inner">🤖</div></div>
+        <div style="font-size:1rem;font-weight:800;margin-bottom:.25rem">كوكو بوت</div>
+        <div style="font-size:.78rem;color:var(--green);font-weight:600" id="botStatus">● يتصل بـ Railway...</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1rem">
+          <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.6rem;text-align:center">
+            <div style="font-size:1rem;font-weight:800;font-family:'IBM Plex Mono';color:var(--gold)">24/7</div>
+            <div style="font-size:.65rem;color:var(--muted)">مراقبة</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.6rem;text-align:center">
+            <div style="font-size:1rem;font-weight:800;font-family:'IBM Plex Mono';color:var(--green)">تجريبي</div>
+            <div style="font-size:.65rem;color:var(--muted)">الحساب</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.6rem;text-align:center">
+            <div style="font-size:1rem;font-weight:800;font-family:'IBM Plex Mono';color:var(--blue)">23:00</div>
+            <div style="font-size:.65rem;color:var(--muted)">التقرير</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.6rem;text-align:center">
+            <div style="font-size:1rem;font-weight:800;font-family:'IBM Plex Mono';color:var(--purple)">IBKR</div>
+            <div style="font-size:.65rem;color:var(--muted)">المنصة</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">⚙️ إعدادات البوت</div></div>
+        <div style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:.6rem">
+          <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--muted)">الميزانية</span><span style="font-family:'IBM Plex Mono';color:var(--gold)">100 ر.س</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--muted)">المضاربة</span><span style="font-family:'IBM Plex Mono';color:var(--green)">60%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--muted)">الاستثمار</span><span style="font-family:'IBM Plex Mono';color:var(--blue)">40%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--muted)">هدف الربح</span><span style="font-family:'IBM Plex Mono';color:var(--gold)">+20%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--muted)">Stop Loss</span><span style="font-family:'IBM Plex Mono';color:var(--red)">-5%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--muted)">التطهير</span><span style="font-family:'IBM Plex Mono';color:var(--green)">0% ✓</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.82rem"><span style="color:var(--muted)">المصدر</span><span style="font-family:'IBM Plex Mono';color:var(--green)">الراجحي ✓</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://koko-bot-production.up.railway.app';
+
+async function fetchData() {
+  try {
+    const r = await fetch(API_URL, {mode:'cors'});
+    const data = await r.json();
+    updateDashboard(data);
+    document.getElementById('statusText').textContent = 'مباشر ✅';
+    document.getElementById('botStatus').textContent = '● يعمل على Railway';
+  } catch(e) {
+    document.getElementById('statusText').textContent = 'جاري إعادة الاتصال...';
+    document.getElementById('botStatus').textContent = '⏳ البوت يعمل...';
+  }
+}
+
+function updateDashboard(data) {
+  document.getElementById('balance').textContent = `${data.balance || 100} ر.س`;
+  document.getElementById('totalTrades').textContent = data.stats?.total_trades || 0;
+  document.getElementById('buySignals').textContent = data.buy_signals_today || 0;
+  document.getElementById('tradesBadge').textContent = `${data.trades?.length || 0} صفقة`;
+  if (data.updated) {
+    document.getElementById('lastUpdate').textContent = new Date(data.updated).toLocaleTimeString('ar-SA');
+  }
+  if (data.last_analysis?.length) {
+    document.getElementById('analysisContainer').innerHTML = data.last_analysis.map(a => {
+      const isPos = a.change >= 0;
+      const sigClass = a.signal === 'شراء' ? 'sig-buy' : a.signal === 'بيع' ? 'sig-sell' : 'sig-hold';
+      return `
+        <div class="analysis-row">
+          <div class="a-emoji">📊</div>
+          <div><div class="a-name">${a.name}</div><div class="a-ticker">${a.ticker}</div></div>
+          <div class="a-price">$${(a.price||0).toFixed(2)}</div>
+          <div class="a-change ${isPos?'pos':'neg'}">${isPos?'+':''}${(a.change||0).toFixed(1)}%</div>
+          <div class="signal ${sigClass}">${a.signal} ${a.confidence}%</div>
+        </div>`;
+    }).join('');
+  }
+  if (data.trades?.length) {
+    document.getElementById('tradesContainer').innerHTML = data.trades.slice(0,10).map(t => `
+      <div class="trade-item">
+        <div class="trade-dot"></div>
+        <div class="trade-info">
+          <div class="trade-name">🟢 ${t.action} ${t.name} (${t.ticker})</div>
+          <div class="trade-time">${t.timeStr || ''}</div>
+        </div>
+        <div style="font-family:'IBM Plex Mono';font-size:.82rem;color:var(--green)">$${(t.price||0).toFixed(2)}</div>
+      </div>`).join('');
+  }
+}
+
+setInterval(() => {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('ar-SA');
+}, 1000);
+
+fetchData();
+setInterval(fetchData, 30000);
+</script>
+</body>
+</html>
