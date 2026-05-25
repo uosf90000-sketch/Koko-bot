@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>كوكو تريدر | مستر يوسف</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F7FA;
+  --white: #FFFFFF;
+  --gold: #B8860B;
+  --gold-light: #F5C842;
+  --gold-pale: #FDF8EC;
+  --green: #00875A;
+  --green-light: #E3F5EE;
+  --red: #C0392B;
+  --red-light: #FDEDED;
+  --blue: #1A56DB;
+  --blue-light: #EBF5FF;
+  --text: #1A1D23;
+  --text2: #4B5563;
+  --text3: #9CA3AF;
+  --border: #E5E7EB;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #1A1D23 0%, #2D3748 100%);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-lg);
+}
+
+.header-inner {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(184,134,11,0.4);
+}
+
+.logo-text { color: white; }
+.logo-text h2 { font-size: 16px; font-weight: 700; line-height: 1; }
+.logo-text p { font-size: 11px; color: #9CA3AF; margin-top: 2px; font-family: 'IBM Plex Mono', monospace; }
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,135,90,0.2);
+  border: 1px solid rgba(0,135,90,0.4);
+  border-radius: 20px;
+  padding: 5px 12px;
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  background: #00D68F;
+  border-radius: 50%;
+  animation: blink 2s infinite;
+  box-shadow: 0 0 6px #00D68F;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.status-text { color: #00D68F; font-size: 11px; font-weight: 600; }
+
+/* Main */
+.main { max-width: 480px; margin: 0 auto; padding: 20px 16px 100px; }
+
+/* Balance Card */
+.balance-card {
+  background: linear-gradient(135deg, #1A1D23 0%, #2D3748 50%, #1A1D23 100%);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.balance-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(245,200,66,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.balance-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; left: -30px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(0,214,143,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.balance-label {
+  color: #9CA3AF;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.balance-amount {
+  font-size: 36px;
+  font-weight: 900;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: -1px;
+  margin-bottom: 4px;
+}
+
+.balance-currency {
+  font-size: 16px;
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+.balance-change {
+  font-size: 12px;
+  color: #00D68F;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.balance-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.bal-stat {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.bal-stat-val {
+  font-size: 16px;
+  font-weight: 800;
+  font-family: 'IBM Plex Mono', monospace;
+  color: white;
+}
+
+.bal-stat-lbl {
+  font-size: 10px;
+  color: #6B7280;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 14px 8px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+  border: 1.5px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn:active { transform: scale(0.96); }
+
+.action-btn.primary {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  border-color: var(--gold);
+}
+
+.action-icon {
+  font-size: 22px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.action-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text2);
+}
+
+.action-btn.primary .action-label { color: white; }
+
+/* Send Report Button */
+.report-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1A56DB 0%, #3B82F6 100%);
+  border: none;
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(26,86,219,0.35);
+  transition: all 0.2s;
+  margin-bottom: 20px;
+}
+
+.report-btn:active { transform: scale(0.98); }
+.report-btn-icon { font-size: 20px; }
+.report-btn-text { color: white; font-size: 15px; font-weight: 700; font-family: 'Cairo', sans-serif; }
+.report-btn-sub { color: rgba(255,255,255,0.7); font-size: 11px; }
+
+/* Section */
+.section { margin-bottom: 20px; }
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.section-title { font-size: 15px; font-weight: 800; color: var(--text); }
+.section-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.badge-green { background: var(--green-light); color: var(--green); }
+.badge-gold { background: var(--gold-pale); color: var(--gold); }
+.badge-blue { background: var(--blue-light); color: var(--blue); }
+
+/* Stock Card */
+.stock-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1.5px solid transparent;
+}
+
+.stock-card:active { transform: scale(0.99); border-color: var(--border); }
+
+.stock-logo {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.stock-info { flex: 1; }
+.stock-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.stock-ticker { font-size: 11px; color: var(--text3); font-family: 'IBM Plex Mono', monospace; }
+
+.stock-right { text-align: left; }
+.stock-price { font-size: 15px; font-weight: 800; font-family: 'IBM Plex Mono', monospace; margin-bottom: 4px; }
+
+.stock-signal {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.sig-buy { background: var(--green-light); color: var(--green); }
+.sig-hold { background: var(--gold-pale); color: var(--gold); }
+.sig-sell { background: var(--red-light); color: var(--red); }
+
+/* Trade Item */
+.trade-item {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trade-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.trade-icon.buy { background: var(--green-light); }
+.trade-icon.sell { background: var(--red-light); }
+
+.trade-info { flex: 1; }
+.trade-name { font-size: 13px; font-weight: 700; }
+.trade-time { font-size: 11px; color: var(--text3); font-family: 'IBM Plex Mono', monospace; }
+.trade-amount { font-size: 14px; font-weight: 800; font-family: 'IBM Plex Mono', monospace; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #1A1D23;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 999;
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg);
+}
+
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 8px 0 20px;
+  display: flex;
+  justify-content: space-around;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 6px 16px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.nav-item.active { background: var(--gold-pale); }
+.nav-icon { font-size: 22px; }
+.nav-label { font-size: 10px; font-weight: 700; color: var(--text3); }
+.nav-item.active .nav-label { color: var(--gold); }
+
+/* Connecting */
+.connecting {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.spin { display: inline-block; animation: spin 1s linear infinite; font-size: 2rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Halal Badge */
+.halal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--green-light);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* Chart Mini */
+.mini-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 20px;
+}
+
+.mini-bar {
+  width: 4px;
+  border-radius: 2px;
+  transition: height 0.5s;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.fade-up { animation: fadeUp 0.5s ease both; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <div class="logo-icon">👑</div>
+      <div class="logo-text">
+        <h2>مستر يوسف</h2>
+        <p>KOKO TRADER PRO</p>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="status-dot"></div>
+      <span class="status-text" id="statusText">مباشر</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Balance Card -->
+  <div class="balance-card fade-up">
+    <div class="balance-label">💰 إجمالي المحفظة</div>
+    <div class="balance-amount">
+      <span id="balAmount">0.00</span>
+      <span class="balance-currency"> $</span>
+    </div>
+    <div class="balance-change" id="balChange">↑ الحساب التجريبي نشط</div>
+    <div class="balance-stats">
+      <div class="bal-stat">
+        <div class="bal-stat-val" style="color:var(--gold-light)" id="statTrades">0</div>
+        <div class="bal-stat-lbl">صفقات اليوم</div>
+      </div>
+      <div class="bal-stat">
+        <div class="bal-stat-val" style="color:#00D68F" id="statBuy">0</div>
+        <div class="bal-stat-lbl">إشارات شراء</div>
+      </div>
+      <div class="bal-stat">
+        <div class="bal-stat-val" style="color:#60A5FA">0%</div>
+        <div class="bal-stat-lbl">تطهير</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions fade-up">
+    <div class="action-btn primary" onclick="sendReport()">
+      <span class="action-icon">📊</span>
+      <div class="action-label">تقرير</div>
+    </div>
+    <div class="action-btn" onclick="refreshData()">
+      <span class="action-icon">🔄</span>
+      <div class="action-label">تحديث</div>
+    </div>
+    <div class="action-btn" onclick="showTrades()">
+      <span class="action-icon">📋</span>
+      <div class="action-label">صفقاتي</div>
+    </div>
+    <div class="action-btn" onclick="showSettings()">
+      <span class="action-icon">⚙️</span>
+      <div class="action-label">إعدادات</div>
+    </div>
+  </div>
+
+  <!-- Send Report Button -->
+  <button class="report-btn fade-up" onclick="sendReport()">
+    <span class="report-btn-icon">📄</span>
+    <div>
+      <div class="report-btn-text">إرسال التقرير الآن</div>
+      <div class="report-btn-sub">تيليجرام + إيميل + PDF</div>
+    </div>
+  </button>
+
+  <!-- AI Analysis -->
+  <div class="section fade-up">
+    <div class="section-header">
+      <div class="section-title">🤖 تحليل الذكاء الاصطناعي</div>
+      <div class="section-badge badge-blue">Gemini + Groq</div>
+    </div>
+    <div id="analysisContainer">
+      <div class="connecting">
+        <div class="spin">⚙️</div>
+        <div style="margin-top:12px;color:var(--text3);font-size:13px">جاري جلب البيانات...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trades -->
+  <div class="section fade-up" id="tradesSection">
+    <div class="section-header">
+      <div class="section-title">💼 آخر الصفقات</div>
+      <div class="section-badge badge-green" id="tradesBadge">0 صفقة</div>
+    </div>
+    <div id="tradesContainer">
+      <div style="background:var(--white);border-radius:var(--radius);padding:30px;text-align:center;box-shadow:var(--shadow);color:var(--text3);font-size:13px">
+        البوت يبحث عن فرص... 🔍
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Info -->
+  <div class="section fade-up" id="settingsSection" style="display:none">
+    <div class="section-header">
+      <div class="section-title">⚙️ إعدادات البوت</div>
+      <div class="halal-badge">✓ حلال 100%</div>
+    </div>
+    <div style="background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)">
+      <div style="display:grid;gap:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--text2)">الميزانية</span>
+          <span style="font-size:14px;font-weight:800;color:var(--gold);font-family:'IBM Plex Mono'">100 ر.س</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--text2)">المضاربة</span>
+          <span style="font-size:14px;font-weight:800;color:var(--green);font-family:'IBM Plex Mono'">60%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--text2)">هدف الربح</span>
+          <span style="font-size:14px;font-weight:800;color:var(--gold);font-family:'IBM Plex Mono'">+20%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--text2)">Stop Loss</span>
+          <span style="font-size:14px;font-weight:800;color:var(--red);font-family:'IBM Plex Mono'">-5%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--text2)">المنصة</span>
+          <span style="font-size:14px;font-weight:800;color:var(--blue);font-family:'IBM Plex Mono'">Alpaca</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
+          <span style="font-size:13px;color:var(--text2)">مصدر الحلال</span>
+          <span style="font-size:14px;font-weight:800;color:var(--green);font-family:'IBM Plex Mono'">الراجحي ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="showMain()">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-label">الرئيسية</div>
+  </div>
+  <div class="nav-item" onclick="showTrades()">
+    <div class="nav-icon">📊</div>
+    <div class="nav-label">الصفقات</div>
+  </div>
+  <div class="nav-item" onclick="sendReport()">
+    <div class="nav-icon">📄</div>
+    <div class="nav-label">تقرير</div>
+  </div>
+  <div class="nav-item" onclick="showSettings()">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">إعدادات</div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const API_URL = 'https://koko-bot-production.up.railway.app';
+const TELEGRAM_TOKEN = '8917723455:AAHvpuqL58U63ol93nhAv9kDmmumFKuoljY';
+const TELEGRAM_CHAT_ID = '500204234';
+
+const STOCKS = [
+  {ticker:'MSFT', name:'مايكروسوفت', emoji:'💻', color:'#EBF5FF'},
+  {ticker:'NVDA', name:'انفيديا', emoji:'🎮', color:'#F0FFF4'},
+  {ticker:'GOOG', name:'جوجل', emoji:'🔍', color:'#FDF8EC'},
+  {ticker:'AAPL', name:'آبل', emoji:'🍎', color:'#FFF5F5'},
+  {ticker:'AMZN', name:'أمازون', emoji:'📦', color:'#FFF8F0'},
+];
+
+function showToast(msg, duration=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+async function sendTelegram(msg) {
+  try {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({chat_id: TELEGRAM_CHAT_ID, text: msg})
+    });
+  } catch(e) {}
+}
+
+async function sendReport() {
+  showToast('⏳ جاري إرسال التقرير...');
+  const data = await fetchData();
+  
+  const now = new Date().toLocaleDateString('ar-SA');
+  const time = new Date().toLocaleTimeString('ar-SA');
+  
+  let msg = `👑 مستر يوسف الصبحي\n📊 تقرير مباشر - ${now} ${time}\n\n`;
+  msg += `💰 الرصيد: ${data?.balance || 100} ر.س\n`;
+  msg += `📈 الصفقات: ${data?.stats?.total_trades || 0}\n`;
+  msg += `🚀 إشارات شراء: ${data?.buy_signals_today || 0}\n\n`;
+  
+  if (data?.last_analysis?.length) {
+    msg += `🤖 آخر تحليل AI:\n`;
+    data.last_analysis.forEach(a => {
+      msg += `• ${a.name}: ${a.signal} (${a.confidence}%)\n`;
+    });
+  }
+  
+  msg += `\n🕌 كل الأسهم حلال ✅\n📊 Alpaca Paper Trading\n🤖 كوكو بوت`;
+  
+  await sendTelegram(msg);
+  showToast('✅ تم إرسال التقرير على تيليجرام!');
+}
+
+async function fetchData() {
+  try {
+    const r = await fetch(API_URL, {mode:'cors'});
+    return await r.json();
+  } catch(e) {
+    return null;
+  }
+}
+
+async function refreshData() {
+  showToast('🔄 جاري التحديث...');
+  await loadDashboard();
+  showToast('✅ تم التحديث!');
+}
+
+async function loadDashboard() {
+  const data = await fetchData();
+  
+  if (!data) {
+    document.getElementById('statusText').textContent = 'يتصل...';
+    return;
+  }
+
+  document.getElementById('statusText').textContent = 'مباشر ✅';
+  document.getElementById('balAmount').textContent = (data.balance || 0).toFixed(2);
+  document.getElementById('statTrades').textContent = data.stats?.total_trades || 0;
+  document.getElementById('statBuy').textContent = data.buy_signals_today || 0;
+  document.getElementById('tradesBadge').textContent = `${data.trades?.length || 0} صفقة`;
+
+  // Analysis
+  if (data.last_analysis?.length) {
+    document.getElementById('analysisContainer').innerHTML = data.last_analysis.map(a => {
+      const stock = STOCKS.find(s => s.ticker === a.ticker) || {emoji:'📊', color:'#F5F7FA'};
+      const isPos = a.change >= 0;
+      const sigClass = a.signal === 'شراء' ? 'sig-buy' : a.signal === 'بيع' ? 'sig-sell' : 'sig-hold';
+      
+      const bars = Array.from({length:8}, (_,i) => {
+        const h = Math.random()*14+4;
+        return `<div class="mini-bar" style="height:${h}px;background:${isPos?'#00875A':'#C0392B'};opacity:0.5"></div>`;
+      }).join('');
+
+      return `
+        <div class="stock-card">
+          <div class="stock-logo" style="background:${stock.color}">${stock.emoji}</div>
+          <div class="stock-info">
+            <div class="stock-name">${a.name}</div>
+            <div class="stock-ticker">${a.ticker} • ${isPos?'+':''}${(a.change||0).toFixed(1)}%</div>
+            <div class="mini-bars" style="margin-top:5px">${bars}</div>
+          </div>
+          <div class="stock-right">
+            <div class="stock-price" style="color:var(--text)">$${(a.price||0).toFixed(2)}</div>
+            <div class="stock-signal ${sigClass}">${a.signal} ${a.confidence}%</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Trades
+  if (data.trades?.length) {
+    document.getElementById('tradesContainer').innerHTML = data.trades.slice(0,8).map(t => `
+      <div class="trade-item">
+        <div class="trade-icon buy">✅</div>
+        <div class="trade-info">
+          <div class="trade-name">${t.name} (${t.ticker})</div>
+          <div class="trade-time">${t.timeStr || '--'} • ${t.action}</div>
+        </div>
+        <div class="trade-amount" style="color:var(--green)">$${(t.price||0).toFixed(2)}</div>
+      </div>
+    `).join('');
+  }
+}
+
+function showMain() {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('analysisContainer').style.display = '';
+  document.getElementById('tradesSection').style.display = '';
+  document.getElementById('settingsSection').style.display = 'none';
+}
+
+function showTrades() {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.currentTarget?.classList.add('active');
+  document.getElementById('tradesSection').scrollIntoView({behavior:'smooth'});
+}
+
+function showSettings() {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.currentTarget?.classList.add('active');
+  document.getElementById('settingsSection').style.display = '';
+  document.getElementById('settingsSection').scrollIntoView({behavior:'smooth'});
+}
+
+// Init
+loadDashboard();
+setInterval(loadDashboard, 30000);
