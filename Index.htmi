@@ -477,8 +477,8 @@ body {
   <div class="balance-card fade-up">
     <div class="balance-label">💰 إجمالي المحفظة</div>
     <div class="balance-amount">
-      <span id="balAmount">100.00</span>
-      <span class="balance-currency"> ر.س</span>
+      <span id="balAmount">0.00</span>
+      <span class="balance-currency"> $</span>
     </div>
     <div class="balance-change" id="balChange">↑ الحساب التجريبي نشط</div>
     <div class="balance-stats">
@@ -693,7 +693,7 @@ async function loadDashboard() {
   }
 
   document.getElementById('statusText').textContent = 'مباشر ✅';
-  document.getElementById('balAmount').textContent = (data.balance || 100).toFixed(2);
+  document.getElementById('balAmount').textContent = (data.balance || 0).toFixed(2);
   document.getElementById('statTrades').textContent = data.stats?.total_trades || 0;
   document.getElementById('statBuy').textContent = data.buy_signals_today || 0;
   document.getElementById('tradesBadge').textContent = `${data.trades?.length || 0} صفقة`;
@@ -766,6 +766,3 @@ function showSettings() {
 // Init
 loadDashboard();
 setInterval(loadDashboard, 30000);
-</script>
-</body>
-</html>
