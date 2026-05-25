@@ -615,7 +615,7 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-const API_URL = 'https://koko-bot-production.up.railway.app';
+const API_URL = 'https://koko-bot-3eca.onrender.com';
 const TELEGRAM_TOKEN = '8917723455:AAHvpuqL58U63ol93nhAv9kDmmumFKuoljY';
 const TELEGRAM_CHAT_ID = '500204234';
 
