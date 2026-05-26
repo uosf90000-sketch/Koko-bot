@@ -228,7 +228,7 @@ def run_trading_cycle():
         analyses.append(analysis)
         print(f"  {stock['ticker']}: {signal} ({conf}%)")
 
-        if signal == "شراء" and conf >= 60:
+        if signal == "شراء" and conf >= 30:
             buy_count += 1
             msg = f"👑 مستر يوسف!\n✅ شراء {stock['emoji']} {stock['name']}\nالسعر: ${price:.2f}\nثقة: {conf}%\n🕌 حلال ✓"
             send_telegram(msg)
