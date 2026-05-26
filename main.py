@@ -34,7 +34,7 @@ from email import encoders
 # ====== بيانات مشتركة ======
 BOT_DATA = {
     "status": "running",
-    "balance": "balance": get_alpaca_balance(),
+    "balance": TOTAL_BUDGET,
     "trades": [],
     "last_analysis": [],
     "stats": {"total_trades": 0, "buy_signals": 0},
